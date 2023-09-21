@@ -12,6 +12,7 @@ TagManager:
   - volume_manager
   - benchmark_flythrough
   - console_canvas
+  - mainMenu
   layers:
   - Default
   - TransparentFX
