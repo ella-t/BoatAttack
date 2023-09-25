@@ -1,18 +1,17 @@
 import xml.etree.ElementTree as ET
 import argparse
 
-
-parser = argparse.ArgumentParser()
-parser.add_argument("input", help="Unity test result XML file to parse and present.", type=argparse.FileType('r'))
-parser.add_argument("-d", "--detailed", help="output detailed test results", action="store_true")
-args = parser.parse_args()
-
 root = None
 
 
 def get_test_xml():
     global root
     root = ET.fromstring(args.input.read())
+
+
+def get_test_xml_from_file(finput):
+    global root
+    root = ET.fromstring(finput.read())
 
 
 def present_test_header():
@@ -45,6 +44,10 @@ def present_test_fixture(fixture):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input", help="Unity test result XML file to parse and present.", type=argparse.FileType('r'))
+    parser.add_argument("-d", "--detailed", help="output detailed test results", action="store_true")
+    args = parser.parse_args()
     get_test_xml()
     print(present_test_header())
     if args.detailed:
