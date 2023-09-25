@@ -43,6 +43,14 @@ def present_test_fixture(fixture):
     return fixturestring
 
 
+def present_all_fixtures():
+    fixtures = []
+    for i in root.iter("test-suite"):
+        if i.attrib["type"] == "TestFixture":
+            fixtures.append(present_test_fixture(i))
+    return fixtures
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="Unity test result XML file to parse and present.", type=argparse.FileType('r'))

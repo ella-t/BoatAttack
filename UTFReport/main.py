@@ -11,16 +11,12 @@ app = App(
 @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
     try:
-        # views.publish is the method that your app uses to push a view to the Home tab
         client.views_publish(
-            # the user that opened your app's app home
             user_id=event["user"],
-            # the view object that appears in the app home
             view={
                 "type": "home",
                 "callback_id": "home_view",
 
-                # body of the view
                 "blocks": [
                     {
                         "type": "header",
@@ -58,9 +54,52 @@ def update_home_tab(client, event, logger):
         logger.error(f"Error publishing home tab: {e}")
 
 
-@app.action("button_details")
-def show_latest_details():
-    pass
+@app.action("actionId-0")
+def show_latest_details(ack, client, body, logger):
+    ack()
+    try:
+        view = {
+            "type": "modal",
+            "callback_id": "view_1",
+
+            "title": {"type": "plain_text", "text": "My App"},
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Test results - most recent build",
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": parseresults.present_test_header()
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Details",
+                    }
+                },
+            ]
+        }
+        details = parseresults.present_all_fixtures()
+        for d in details:
+            view["blocks"].append({"type": "section", "text": {"type": "mrkdwn", "text": d}})
+        client.views_open(
+            trigger_id=body["trigger_id"],
+            view=view
+        )
+
+    except Exception as e:
+        logger.error(f"Error publishing home tab: {e}")
 
 
 if __name__ == '__main__':
