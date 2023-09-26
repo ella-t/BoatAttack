@@ -10,6 +10,7 @@ app = App(
 
 @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
+    parseresults.get_test_xml_from_file(open(os.environ.get("TEST_RESULTS_PATH"), 'r'))
     try:
         client.views_publish(
             user_id=event["user"],
@@ -57,6 +58,7 @@ def update_home_tab(client, event, logger):
 @app.action("actionId-0")
 def show_latest_details(ack, client, body, logger):
     ack()
+    parseresults.get_test_xml_from_file(open(os.environ.get("TEST_RESULTS_PATH"), 'r'))
     try:
         view = {
             "type": "modal",

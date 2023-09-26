@@ -13,7 +13,7 @@ public class StartupTests
     [OneTimeSetUp]
     public void LoadInitialScene()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("main_menu");
     }
 
     [Test, Order(1)]

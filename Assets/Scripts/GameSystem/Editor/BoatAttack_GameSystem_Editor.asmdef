@@ -1,0 +1,20 @@
+{
+    "name": "BoatAttack_GameSystem_Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:329b4ccd385744985bf3f83cfd77dfe7",
+        "GUID:fe3545f7b1afa7e44aa74b4afe416c9b",
+        "GUID:d8b63aba1907145bea998dd612889d6b"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

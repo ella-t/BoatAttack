@@ -30,12 +30,12 @@ def present_test_header():
 def present_test_fixture(fixture):
     fixturestring = "{} Fixture Results\n".format(fixture.attrib["name"])
     for test in fixture.findall("test-case"):
-        fixturestring += test.attrib["name"]
         if test.attrib["result"] == "Passed":
-            fixturestring += " - Passed ✔ - "
+            fixturestring += "✔ Passed - "
         elif test.attrib["result"] == "Failed":
-            fixturestring += " - Failed ❌ - "
-        fixturestring += "{} elapsed".format(test.attrib["duration"])
+            fixturestring += "❌ Failed - "
+        fixturestring += test.attrib["name"]
+        fixturestring += " - {} elapsed".format(test.attrib["duration"])
         fixturestring += "\n"
         if test.attrib["result"] == "Failed":
             fixturestring += test.find("failure").find("message").text
