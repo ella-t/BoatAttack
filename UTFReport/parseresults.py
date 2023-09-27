@@ -51,6 +51,10 @@ def present_all_fixtures():
     return fixtures
 
 
+def get_platform():
+    pass
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="Unity test result XML file to parse and present.", type=argparse.FileType('r'))

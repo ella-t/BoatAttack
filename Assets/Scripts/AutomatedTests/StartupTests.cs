@@ -20,6 +20,19 @@ public class StartupTests
     public void LoadMainScene()
     {
         Debug.Log("Loading main scene");
+        switch(Application.platform) 
+        {
+            case RuntimePlatform.WindowsEditor:
+            case RuntimePlatform.OSXEditor:
+                Debug.Log("Platform=Playmode");
+                break;
+            case RuntimePlatform.WindowsPlayer:
+                Debug.Log("Platform=Windows");
+                break;
+            case RuntimePlatform.Android:
+                Debug.Log("Platform=Android");
+                break;
+        }
     }
 
     [UnityTest, Order(2)]
