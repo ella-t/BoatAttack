@@ -8,6 +8,13 @@ app = App(
 )
 
 
+def platform_string():
+    s = "Platform: " + parseresults.get_platform()
+    if s == "Platform: ":
+        s = "Unknown platform"
+    return s
+
+
 @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
     parseresults.get_test_xml_from_file(open(os.environ.get("TEST_RESULTS_PATH"), 'r'))
@@ -24,6 +31,13 @@ def update_home_tab(client, event, logger):
                         "text": {
                             "type": "plain_text",
                             "text": "Test results - most recent build",
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": platform_string()
                         }
                     },
                     {
@@ -71,6 +85,13 @@ def show_latest_details(ack, client, body, logger):
                     "text": {
                         "type": "plain_text",
                         "text": "Test results - most recent build",
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": platform_string()
                     }
                 },
                 {

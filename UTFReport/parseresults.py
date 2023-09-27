@@ -52,7 +52,13 @@ def present_all_fixtures():
 
 
 def get_platform():
-    pass
+    platform = ""
+    for i in root.iter("test-case"):
+        if i.attrib["name"] == "LoadMainScene":
+            output = i.text
+            if "Platform=" in output:
+                platform = output.partition("Platform=")[2]
+    return platform
 
 
 if __name__ == "__main__":
