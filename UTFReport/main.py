@@ -7,12 +7,70 @@ app = App(
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 )
 
+channel_name = "testresults"
+conversation_id = None
+
 
 def platform_string():
     s = "Platform: " + parseresults.get_platform()
     if s == "Platform: ":
         s = "Unknown platform"
     return s
+
+
+def get_conversation_id():
+    print("Getting conversation id...")
+    global conversation_id
+    try:
+        for result in app.client.conversations_list():
+            if conversation_id is not None:
+                break
+            for channel in result["channels"]:
+                if channel["name"] == channel_name:
+                    conversation_id = channel["id"]
+                    print(f"Found conversation ID: {conversation_id}")
+                    break
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+def post_latest_test():
+    parseresults.get_test_xml_from_file(open(os.environ.get("TEST_RESULTS_PATH"), 'r'))
+    try:
+        app.client.chat_postMessage(
+            channel=conversation_id,
+            blocks={
+                "type": "home",
+                "callback_id": "home_view",
+
+                "blocks": [
+                    {
+                        "type": "header",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Test results - most recent build",
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": platform_string()
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": parseresults.present_test_header()
+                        }
+                    }
+                ]
+            }
+        )
+
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 @app.event("app_home_opened")
@@ -128,3 +186,6 @@ def show_latest_details(ack, client, body, logger):
 if __name__ == '__main__':
     parseresults.get_test_xml_from_file(open(os.environ.get("TEST_RESULTS_PATH"), 'r'))
     app.start(port=int(os.environ.get("PORT", 3000)))
+    get_conversation_id()
+    if conversation_id is not None:
+        post_latest_test()
