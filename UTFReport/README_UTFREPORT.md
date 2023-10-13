@@ -18,7 +18,7 @@ This is a tool written in Python for displaying the contents of XML files genera
 
 * If the test platform is changed, the project's build settings must also be changed to be for the same platform.
 
-Once you have a playmodetests.xml file, you are ready to use either the standalone script or Slack app.
+Once you have a playmodetests.xml file, you are ready to use either the standalone scripts or Slack app.
 
 ### Parse Results script
 
@@ -30,7 +30,7 @@ It can also be used with the --detailed (or -d) option to output more informatio
 
 ### Slack app
 
-To use the Slack app, a Python virtual environment must be set up containing slack_bolt.
+To run the Slack app, a Python virtual environment must be set up containing slack_bolt.
 
 Additionally, the Slack app requires certain environment variables set up in its virtual environment:
 
@@ -42,4 +42,14 @@ ngrok can be used to set up a server to run the app from.  Make sure to change y
 
 For a detailed guide to setting up a slack_bolt app, see here: https://api.slack.com/start/building/bolt-python
 
-Once the app is running and installed on your workspace, you can use it by going to the app's home tab.  Here it will display the less detailed test summary, and clicking the "Details" button will show the full breakdown.
+While the app is running and installed on your workspace, you can visit the app's Home tab to get the latest test results.
+
+### Posting results to a channel
+
+The postlatest.py script can post test results as messages to a slack channel.
+
+The app doesn't need to be running to post these messages.  The environment variables still need to be set up.
+
+The script will look for a channel in your workspace titled "testresults" and post the results there.  Make sure UTF Report is added to this channel.  If you prefer, you can post to a different channel by editing channel_name in slackapp.py.
+
+There are no command line options for this script.  It will post results from the TEST_RESULTS_PATH variable.

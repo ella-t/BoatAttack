@@ -49,3 +49,4 @@ Packages/packages-lock.json
 
 # Test results
 playmodetests.xml
+*.pyc

@@ -8,7 +8,6 @@ app = App(
 )
 
 channel_name = "testresults"
-conversation_id = None
 
 
 def platform_string():
@@ -20,35 +19,28 @@ def platform_string():
 
 def get_conversation_id():
     print("Getting conversation id...")
-    global conversation_id
     try:
         for result in app.client.conversations_list():
-            if conversation_id is not None:
-                break
             for channel in result["channels"]:
                 if channel["name"] == channel_name:
                     conversation_id = channel["id"]
                     print(f"Found conversation ID: {conversation_id}")
-                    break
+                    return conversation_id
     except Exception as e:
         print(f"Error: {e}")
 
 
-def post_latest_test():
+def post_latest_test(conversation_id):
     parseresults.get_test_xml_from_file(open(os.environ.get("TEST_RESULTS_PATH"), 'r'))
     try:
         app.client.chat_postMessage(
             channel=conversation_id,
-            blocks={
-                "type": "home",
-                "callback_id": "home_view",
-
-                "blocks": [
+            blocks=[
                     {
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": "Test results - most recent build",
+                            "text": "Test results - most recent build"
                         }
                     },
                     {
@@ -65,8 +57,7 @@ def post_latest_test():
                             "text": parseresults.present_test_header()
                         }
                     }
-                ]
-            }
+            ]
         )
 
     except Exception as e:
@@ -186,6 +177,3 @@ def show_latest_details(ack, client, body, logger):
 if __name__ == '__main__':
     parseresults.get_test_xml_from_file(open(os.environ.get("TEST_RESULTS_PATH"), 'r'))
     app.start(port=int(os.environ.get("PORT", 3000)))
-    get_conversation_id()
-    if conversation_id is not None:
-        post_latest_test()
